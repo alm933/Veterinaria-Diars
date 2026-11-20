@@ -1,12 +1,140 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Veterinaria DIARS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f5">
+  <title>Huellitas | Gestión veterinaria</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <h1>Veterinaria DIARS</h1>
-  <p>Bienvenidos a nuestro proyecto de veterinaria.</p>
+  <!-- Marco principal: navegación lateral y área de trabajo -->
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-view="dashboard" aria-label="Ir al menú principal">
+        <span class="brand-mark">H</span><span><strong>huellitas</strong><small>GESTIÓN VETERINARIA</small></span>
+      </a>
+      <div class="nav-caption">ESPACIO DE TRABAJO</div>
+      <nav class="side-nav" aria-label="Navegación principal">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon">⌂</span>Menú principal</button>
+        <div class="nav-caption nav-caption-spaced">RECEPCIÓN</div>
+        <button class="nav-link" data-view="emergency"><span class="nav-icon">✚</span>Ingreso por emergencia</button>
+        <button class="nav-link" data-view="appointment"><span class="nav-icon">▦</span>Registrar cita médica</button>
+        <div class="nav-caption nav-caption-spaced">PRÓXIMAMENTE</div>
+        <button class="nav-link disabled" type="button" title="Se agregará en otra rama"><span class="nav-icon">＋</span>Más procesos</button>
+      </nav>
+      <div class="sidebar-bottom"><span class="online-dot"></span> Prototipo académico <small>v0.1</small></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menú" aria-expanded="false">☰</button>
+        <div class="breadcrumb"><span>Huellitas</span><b>/</b><strong id="pageCrumb">Menú principal</strong></div>
+        <div class="user-chip"><span class="user-avatar">AL</span><span><b>Recepción</b><small>Usuario de demostración</small></span><span class="chevron">⌄</span></div>
+      </header>
+
+      <!-- Panel inicial con accesos y resumen demostrativo -->
+      <section class="view active" id="dashboardView">
+        <div class="welcome-row">
+          <div><p class="eyebrow"><span class="eyebrow-dot"></span> PANEL DE RECEPCIÓN</p>
+            <h1>Hola, equipo <em>Huellitas.</em></h1>
+            <p class="muted lead">Organiza la atención de cada paciente desde un solo lugar.</p></div>
+          <div class="date-card"><span class="date-icon">◷</span><span><small>HOY</small><b id="todayLabel">—</b></span></div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-symbol green">▦</span><div><small>CITAS DE HOY</small><b>08</b><span class="stat-note">Agenda de demostración</span></div><span class="stat-arrow">↗</span></article>
+          <article class="stat-card"><span class="stat-symbol amber">✚</span><div><small>INGRESOS URGENTES</small><b>02</b><span class="stat-note">Requieren atención clínica</span></div><span class="stat-arrow">↗</span></article>
+          <article class="stat-card"><span class="stat-symbol blue">♡</span><div><small>PACIENTES REGISTRADOS</small><b>124</b><span class="stat-note">Datos de ejemplo</span></div><span class="stat-arrow">↗</span></article>
+        </div>
+        <div class="section-title"><div><p class="eyebrow">ACCESOS RÁPIDOS</p><h2>¿Qué deseas realizar?</h2></div><span class="section-hint">Selecciona un proceso para comenzar</span></div>
+        <div class="process-grid">
+          <article class="process-card emergency-card"><div class="process-top"><span class="process-icon icon-amber">✚</span><span class="process-tag">RECEPCIÓN</span></div><h3>Ingreso por Emergencia</h3><p>Registra rápidamente la llegada de un paciente que necesita atención urgente.</p><button class="text-action" data-view="emergency">Abrir proceso <span>→</span></button><span class="card-watermark">✚</span></article>
+          <article class="process-card appointment-card"><div class="process-top"><span class="process-icon icon-green">▦</span><span class="process-tag">RECEPCIÓN</span></div><h3>Registrar Cita Médica</h3><p>Programa una consulta relacionando al cliente, su mascota y el veterinario.</p><button class="text-action" data-view="appointment">Abrir proceso <span>→</span></button><span class="card-watermark">▦</span></article>
+        </div>
+        <div class="info-banner"><span class="info-icon">i</span><p><b>Versión de demostración</b><br>Los formularios usan datos locales de ejemplo. Todavía no guardan información en una base de datos.</p></div>
+      </section>
+
+      <!-- Formulario de ingreso urgente: datos de cliente, paciente y emergencia -->
+      <section class="view" id="emergencyView">
+        <div class="page-heading"><div><button class="back-link" data-view="dashboard">← Menú principal</button><p class="eyebrow"><span class="eyebrow-dot amber-dot"></span> RECEPCIÓN · ATENCIÓN URGENTE</p><h1>Ingreso por <em>Emergencia</em></h1><p class="muted">Registra la llegada del paciente para priorizar su atención.</p></div><span class="heading-badge badge-amber">✚ Urgencia</span></div>
+        <form id="emergencyForm" novalidate>
+          <div class="form-card">
+            <div class="form-card-heading"><span class="step-number amber-step">1</span><div><h2>Datos del ingreso</h2><p>La fecha y hora se completan automáticamente.</p></div></div>
+            <div class="field-grid two">
+              <label class="field"><span>Fecha de ingreso <i>Automático</i></span><input id="emergencyDate" type="date" readonly></label>
+              <label class="field"><span>Hora de ingreso <i>Automático</i></span><input id="emergencyTime" type="time" readonly></label>
+            </div>
+          </div>
+          <div class="form-card">
+            <div class="form-card-heading"><span class="step-number">2</span><div><h2>Datos del cliente</h2><p>Busca al propietario para cargar sus datos y mascotas.</p></div></div>
+            <div class="field-grid search-grid">
+              <label class="field"><span>Número de documento <b class="required">*</b></span><input id="emergencyDocument" inputmode="numeric" placeholder="Ej. 72104568" maxlength="12"></label>
+              <button class="button button-outline align-end" id="searchEmergencyClient" type="button"><span>⌕</span> Buscar cliente</button>
+              <label class="field"><span>Nombres y apellidos</span><input id="emergencyClientName" placeholder="Se completa al buscar" readonly></label>
+            </div>
+            <div class="inline-note" id="emergencyClientNote">Usa el documento de demostración <b>72104568</b> para cargar un cliente de ejemplo.</div>
+          </div>
+          <div class="form-card">
+            <div class="form-card-heading"><span class="step-number">3</span><div><h2>Datos del paciente</h2><p>Selecciona la mascota que ingresa a la clínica.</p></div></div>
+            <div class="field-grid two">
+              <label class="field"><span>Paciente <b class="required">*</b></span><select id="emergencyPatient" disabled><option value="">Primero busca un cliente</option></select></label>
+              <label class="field"><span>Número de historia clínica</span><input id="emergencyRecord" placeholder="Se completa al seleccionar" readonly></label>
+              <label class="field"><span>Especie</span><input id="emergencySpecies" placeholder="—" readonly></label>
+              <label class="field"><span>Raza</span><input id="emergencyBreed" placeholder="—" readonly></label>
+            </div>
+          </div>
+          <div class="form-card">
+            <div class="form-card-heading"><span class="step-number amber-step">4</span><div><h2>Datos de emergencia</h2><p>Describe brevemente el motivo y la condición inicial.</p></div></div>
+            <div class="field-grid two">
+              <label class="field full"><span>Motivo de emergencia <b class="required">*</b></span><textarea id="emergencyReason" rows="3" placeholder="Describe el motivo de ingreso urgente"></textarea></label>
+              <label class="field full"><span>Observaciones iniciales</span><textarea id="emergencyObservations" rows="2" placeholder="Información adicional relevante (opcional)"></textarea></label>
+            </div>
+          </div>
+          <div class="form-actions"><button class="button button-ghost" type="button" data-view="dashboard">Cancelar</button><button class="button button-amber" type="submit">Registrar ingreso <span>→</span></button></div>
+        </form>
+      </section>
+
+      <!-- Formulario de cita: vincula cliente, mascota, veterinario y horario -->
+      <section class="view" id="appointmentView">
+        <div class="page-heading"><div><button class="back-link" data-view="dashboard">← Menú principal</button><p class="eyebrow"><span class="eyebrow-dot"></span> RECEPCIÓN · AGENDA</p><h1>Registrar <em>Cita Médica</em></h1><p class="muted">Programa una consulta y revisa los horarios disponibles.</p></div><span class="heading-badge badge-green">▦ Nueva cita</span></div>
+        <form id="appointmentForm" novalidate>
+          <div class="form-card">
+            <div class="form-card-heading"><span class="step-number">1</span><div><h2>Datos del cliente</h2><p>Busca al propietario para asociar a su mascota.</p></div></div>
+            <div class="field-grid search-grid">
+              <label class="field"><span>Número de documento <b class="required">*</b></span><input id="appointmentDocument" inputmode="numeric" placeholder="Ej. 72104568" maxlength="12"></label>
+              <button class="button button-outline align-end" id="searchAppointmentClient" type="button"><span>⌕</span> Buscar cliente</button>
+              <label class="field"><span>Nombres y apellidos</span><input id="appointmentClientName" placeholder="Se completa al buscar" readonly></label>
+            </div>
+            <div class="inline-note" id="appointmentClientNote">Usa el documento de demostración <b>72104568</b> para cargar un cliente de ejemplo.</div>
+          </div>
+          <div class="form-card">
+            <div class="form-card-heading"><span class="step-number">2</span><div><h2>Datos del paciente</h2><p>Selecciona la mascota para la consulta.</p></div></div>
+            <div class="field-grid two">
+              <label class="field"><span>Paciente <b class="required">*</b></span><select id="appointmentPatient" disabled><option value="">Primero busca un cliente</option></select></label>
+              <label class="field"><span>Número de historia clínica</span><input id="appointmentRecord" placeholder="Se completa al seleccionar" readonly></label>
+              <label class="field"><span>Especie</span><input id="appointmentSpecies" placeholder="—" readonly></label>
+              <label class="field"><span>Raza</span><input id="appointmentBreed" placeholder="—" readonly></label>
+            </div>
+          </div>
+          <div class="form-card">
+            <div class="form-card-heading"><span class="step-number">3</span><div><h2>Datos de la cita</h2><p>Selecciona quién atenderá y consulta la agenda.</p></div></div>
+            <div class="field-grid two">
+              <label class="field"><span>Veterinario asignado <b class="required">*</b></span><select id="appointmentVet"><option value="">Selecciona un veterinario</option><option>Dra. Camila Torres</option><option>Dr. Mateo Rivas</option><option>Dra. Lucía Paredes</option></select></label>
+              <label class="field"><span>Fecha de atención <b class="required">*</b></span><input id="appointmentDate" type="date"></label>
+              <div class="field full"><span>Horario disponible <b class="required">*</b></span><div class="slot-row" id="slotRow"><span class="slot-placeholder">Selecciona veterinario y fecha, luego consulta disponibilidad.</span></div><input id="appointmentSlot" type="hidden"></div>
+              <label class="field full"><span>Motivo de consulta <b class="required">*</b></span><textarea id="appointmentReason" rows="3" placeholder="Describe brevemente el motivo de la consulta"></textarea></label>
+            </div>
+            <div class="availability-row"><p id="availabilityMessage">La disponibilidad es de demostración y no consulta una agenda real.</p><button class="button button-outline" id="checkAvailability" type="button">Consultar disponibilidad <span>↻</span></button></div>
+          </div>
+          <div class="form-actions"><button class="button button-ghost" type="button" data-view="dashboard">Cancelar</button><button class="button button-green" type="submit">Grabar cita <span>→</span></button></div>
+        </form>
+      </section>
+
+      <footer class="footer"><span>Huellitas · Proyecto académico DIARS</span><span>Prototipo de interfaz · datos ficticios</span></footer>
+    </main>
+  </div>
+  <!-- Región accesible para mensajes de éxito, error o validación -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
